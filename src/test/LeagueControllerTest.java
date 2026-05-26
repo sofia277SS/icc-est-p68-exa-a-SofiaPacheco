@@ -83,6 +83,16 @@ public class LeagueControllerTest {
     @Test
     @DisplayName("Test 1: Validar getTotalActiveGoals() - Calculo de goles activos")
     public void testGetTotalActiveGoals() {
+        java.security.CodeSource cs = League.class.getProtectionDomain().getCodeSource();
+        if (cs != null) {
+            String location = cs.getLocation().toString();
+            if (location.contains("validadores-ligas")) {
+                org.junit.jupiter.api.Assertions.fail(
+                        "ERROR: La clase League esta siendo cargada del JAR de validadores, "
+                                + "no de su propia implementacion.\n"
+                                + "Debe crear e implementar src/models/League.java con el metodo getTotalActiveGoals().");
+            }
+        }
         League[] leagues = LeagueTestData.createLeagues();
         LeagueValidators.validarCalculoTotalActiveGoals(leagues);
     }
