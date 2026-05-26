@@ -89,29 +89,32 @@ jobs:
           if [ -z "$FALLADAS" ]; then FALLADAS=0; fi
 
           TOTAL=$((PASADAS + FALLADAS))
-
           PUNTOS_BASE=$((PASADAS * 2))
 
           if [ "$TOTAL" -eq 0 ]; then
-            NOTA=0
+            NOTA="0.00"
           else
             NOTA=$(echo "scale=2; $PUNTOS_BASE * 8 / 6" | bc)
           fi
 
-          USUARIO=$(echo "${{ steps.estudiante.outputs.correo }}" | cut -d '@' -f1)
+          NOMBRE="${{ steps.estudiante.outputs.nombre }}"
+          CORREO="${{ steps.estudiante.outputs.correo }}"
+          FILA="${{ steps.estudiante.outputs.fila }}"
+
+          USUARIO=$(echo "$CORREO" | cut -d '@' -f1)
           REPO=$(basename "$GITHUB_REPOSITORY")
           ARCHIVO="$USUARIO-$REPO.txt"
 
-          echo "Estudiante: ${{ steps.estudiante.outputs.nombre }}" > "$ARCHIVO"
-          echo "Correo: ${{ steps.estudiante.outputs.correo }}" >> "$ARCHIVO"
-          echo "Fila: ${{ steps.estudiante.outputs.fila }}" >> "$ARCHIVO"
+          echo "Estudiante: $NOMBRE" > "$ARCHIVO"
+          echo "Correo: $CORREO" >> "$ARCHIVO"
+          echo "Fila: $FILA" >> "$ARCHIVO"
           echo "---" >> "$ARCHIVO"
           echo "Pruebas pasadas: $PASADAS de $TOTAL" >> "$ARCHIVO"
           echo "Puntaje base: $PUNTOS_BASE / 6" >> "$ARCHIVO"
           echo "Nota final: $NOTA / 8" >> "$ARCHIVO"
 
           echo "ARCHIVO=$ARCHIVO" >> $GITHUB_ENV
-          echo "::notice title=Nota Final::${{ steps.estudiante.outputs.nombre }} obtuvo $NOTA / 8 (${PASADAS} de ${TOTAL} pruebas, Fila ${{ steps.estudiante.outputs.fila }}
+          echo "::notice title=Nota Final::$NOMBRE obtuvo $NOTA / 8 - $PASADAS de $TOTAL pruebas - Fila $FILA"
 
       - name: Subir resultado
         uses: actions/upload-artifact@v4
