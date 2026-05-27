@@ -1,3 +1,7 @@
+import models.League;
+import models.Player;
+import models.Team;
+import controllers.LeagueController;
 
 public class App {
 
@@ -156,9 +160,15 @@ public class App {
                                 "Bienvenido al sistema de ligas de futbol. Por favor configure su fila en student.env y ejecute los tests automaticos para validar su implementacion.");
                 // TODO: Imprimir listado original
                 // Ejemplo:
-                // System.out.println("Listado original:");
-                // controller.printLeagues(leagues);
-
+                System.out.println("Listado original:");
+                LeagueController controller = new LeagueController();
+                controller.printLeagues(getLeagues());
+                System.out.println("Listado ordenado:");
+                controller.sortSelectionAsc(getLeagues());
+                System.out.println("Primera busqueda:");
+                controller.binarySearchByTotalActiveGoals(getLeagues(), 42);
+                System.out.println("Segunda busqueda:");
+                controller.binarySearchByTotalActiveGoals(getLeagues(), 55);
                 // TODO: Crear una copia del arreglo y aplicar el metodo de ordenamiento de su
                 // fila
                 // Fila A: controller.sortSelectionAsc(copia)

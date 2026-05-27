@@ -14,7 +14,19 @@ public class LeagueController {
      * @return Arreglo ordenado
      */
     public League[] sortSelectionAsc(League[] leagues) {
-        // TODO: Implementar (solo si su fila es A)
+
+        for (int i = 0; i < leagues.length - 1; i++) {
+            int menor = i;
+            for (int j = i + 1; i < leagues.length; j++) {
+                if (leagues[j].getTotalActiveGoals() < leagues[menor].getTotalActiveGoals()) {
+                    menor = j;
+                }
+                League auxi = leagues[i];
+                leagues[j] = leagues[menor];
+                leagues[menor] = auxi;
+            }
+
+        }
         throw new UnsupportedOperationException("Metodo sortSelectionAsc no implementado");
     }
 
@@ -47,7 +59,23 @@ public class LeagueController {
      * @return La liga encontrada, o null si no existe
      */
     public League binarySearchByTotalActiveGoals(League[] leagues, int totalActiveGoals) {
-        // TODO: Implementar
+        int bajo = 0;
+        int alto = leagues.length - 1;
+        League totalGoals;
+
+        while (bajo <= alto) {
+            int medio = (bajo + alto) / 2;
+            if (leagues[medio] == totalActiveGoals) {
+                return medio;
+            }
+            if (leagues[medio] < totalActiveGoals) {
+                bajo = medio + 1;
+            } else {
+                alto = medio - 1;
+            }
+            return null;
+        }
+
         throw new UnsupportedOperationException("Metodo binarySearchByTotalActiveGoals no implementado");
     }
 
@@ -57,6 +85,10 @@ public class LeagueController {
      * @param leagues Arreglo de ligas a imprimir
      */
     public void printLeagues(League[] leagues) {
-
+        for (League league : leagues) {
+            System.out.println(league.getName());
+            System.out.println(league.getTeams());
+            System.out.println(league.getTotalActiveGoals());
+        }
     }
 }
